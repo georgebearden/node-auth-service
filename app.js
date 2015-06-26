@@ -13,3 +13,11 @@ app.use(bodyParser.urlencoded({extended: true}));
 
 // Connect our auth service to the users database.
 mongoose.connect(mongoConfig.url);
+
+// Setup the routes.
+var users = require('./routes/users');
+app.use('/users', users);
+
+var port = process.env.PORT || 8080;
+app.listen(port);
+console.log('server listening on port ' + port);
