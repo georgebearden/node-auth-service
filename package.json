@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/georgebearden/node-auth-service#readme",
   "dependencies": {
+    "bcrypt": "^0.8.3",
     "body-parser": "^1.13.1",
     "express": "^4.13.0",
     "jsonwebtoken": "^5.0.2",
