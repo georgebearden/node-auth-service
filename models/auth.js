@@ -1,17 +1,14 @@
 var User = require('../models/user');
 
-module.exports.usernameExists = function(username) {
-	console.log('what ' + username);
+module.exports.usernameExists = function(username, callback) {
 	User.findOne({username: username}, function(err, user) {
-		if (err) throw err;
+		if (err) callback(err);
 		
 		if (user) {
-			console.log('found user');
-			return true;
+			callback(null, true);
 		}
 		else {
-			console.log('did not find user');
-			return false;
+			callback(null, false);
 		} 
 	});
 };
