@@ -1,4 +1,3 @@
-var auth = require('../models/auth');
 var User = require('../models/user');
 var express = require('express');
 var router = express.Router();
@@ -9,7 +8,8 @@ router.post('/', function(req, res) {
 	var username = req.body.username;
 	var password = req.body.password;
 	
-	auth.usernameExists(username, function(err, userExists) {
+	User.findOne({username: username}, function(err, userExists) {
+		if (err) throw err;
 		
 		if (userExists) {
 			res.status(400);
@@ -25,6 +25,7 @@ router.post('/', function(req, res) {
 				if (err) throw err;
 				
 				console.log('created user: ' + username);
+				
 				res.send({token: "lakjdsflkajsdf"});
 			});
 		}
