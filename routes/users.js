@@ -20,7 +20,6 @@ router.post('/', function(req, res) {
 			user.username = username;
 			// Make sure to hash the password before storing in the database.
 			user.password = user.hash(password);
-			
 			user.save(function(err) {
 				if (err) throw err;
 				

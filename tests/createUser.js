@@ -2,11 +2,12 @@ var request = require('request');
 var bodyParser = require('body-parser');
 
 // /users, POST, creates a new user
-var newUser = {
+var user = {
 	username: "TestUsername",
 	password: "TestPassword"	
 };
-request.post({url: 'http://localhost:8080/users', form: newUser}, function(error, response, body) {
+
+request.post({url: 'http://localhost:8080/users', form: user}, function(error, response, body) {
 	
 	var json = JSON.parse(body);
 	
