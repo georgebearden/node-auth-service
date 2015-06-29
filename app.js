@@ -4,7 +4,6 @@ var morgan = require('morgan');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 
-
 // Setup the app.
 var app = express();
 app.use(morgan('dev'));

@@ -11,8 +11,6 @@ userSchema.methods.hash = function(password) {
 };
 
 userSchema.methods.isPasswordValid = function(pass) {
-	console.log('pass              ' + pass);
-	console.log('this.password     ' + this.password);
 	return bcrypt.compareSync(pass, this.password);
 };
 

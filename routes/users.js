@@ -1,4 +1,5 @@
 var User = require('../models/user');
+var tokenAuthenticator = require('../models/tokenAuthenticator');
 var express = require('express');
 var router = express.Router();
 
@@ -23,10 +24,28 @@ router.post('/', function(req, res) {
 			user.save(function(err) {
 				if (err) throw err;
 				
-				console.log('created user: ' + username);
-				
-				res.send({token: "lakjdsflkajsdf"});
+				res.status(200);
+				res.send({
+					userId: user._id,
+					message: "User created"
+				});
 			});
+		}
+	});
+});
+
+router.get('/:user_id', function(req, res) {
+	
+	console.log('searching for user with id: ' + req.params.user_id);
+	
+	User.findById(req.params.user_id, function (err, user) {
+		if (err) {
+			res.send(err);
+		} else {
+			
+			console.log(user);
+			
+			res.json(user);
 		}
 	});
 });

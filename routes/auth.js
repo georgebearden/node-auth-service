@@ -1,4 +1,6 @@
 var User = require('../models/user');
+var jwt = require('jsonwebtoken');
+var authConfig = require('../config/auth.js');
 var express = require('express');
 var router = express.Router();
 
@@ -20,7 +22,15 @@ router.post('/', function(req, res) {
 			res.send({errorMessage: 'The password is incorrect'});
 		}
 		else {
-			res.send({token: "lakjdsflkajsdf"});
+			
+			var token = jwt.sign(user, authConfig.secret, {
+					expiresInMinutes: 9999
+				});
+				
+				res.send({
+					token: token,
+					userId: user._id
+				});
 		}
 	});
 });

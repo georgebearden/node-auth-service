@@ -13,6 +13,7 @@ request.post({url: 'http://localhost:8080/users', form: user}, function(error, r
 	
 	if (!error && response.statusCode == 200) {
 		console.log('/users, POST passed');
+		console.log('userId = ' + json.userId);
 	}
 	else {
 		console.log('/users, POST failed with status code ' + response.statusCode + ', ' + json.errorMessage);
