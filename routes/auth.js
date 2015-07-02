@@ -1,36 +1,47 @@
 var User = require('../models/user');
 var jwt = require('jsonwebtoken');
-var authConfig = require('../config/auth.js');
-var express = require('express');
-var router = express.Router();
+var secret = require('../config/secret');
+var router = require('express').Router();
 
 // authenticates a username and password
-router.post('/', function(req, res) {
+router.get('/auth', function(req, res) {
 	
 	var username = req.body.username;
 	var password = req.body.password;
 	
 	User.findOne({username: username}, function(err, user) {
-		if (err) throw err;
-		
-		if (!user) {
-			res.status(400);
-			res.send({errorMessage: 'The username does not exist'});
-		}
-		else if (!user.isPasswordValid(password)) {
-			res.status(400);
-			res.send({errorMessage: 'The password is incorrect'});
-		}
-		else {
+		if (err) {
+			res.status(500);
+			res.send({
+				statusCode: 500,
+				error: err		
+			});
+		} else if (!user) {
+			res.status(401);
+			res.send({
+				statusCode: 401,
+				error: 'The username ' + username + 'does not exist'
+			});
+		} else if (!user.isPasswordValid(password)) {
+			res.status(401);
+			res.send({
+				statusCode: 401,
+				error: 'The password is invalid'
+			});
+		} else {
+			var accessToken = jwt.sign(user, secret.jwtSecretKey, {
+				expiresInMinutes: 9999
+			});
 			
-			var token = jwt.sign(user, authConfig.secret, {
-					expiresInMinutes: 9999
-				});
-				
-				res.send({
-					token: token,
-					userId: user._id
-				});
+			res.status(200);
+			res.send({
+				id: user._id,
+				username: user.username,
+				createdAt: user.createdAt,
+				updatedAt: user.updatedAt,
+				accessToken: accessToken,
+				expiresIn: 9999
+			});
 		}
 	});
 });
